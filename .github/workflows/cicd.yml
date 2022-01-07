@@ -13,3 +13,4 @@ jobs:
           BASE_DOMAIN: 'dev.archive.org'
           NOMAD_TOKEN: ${{ secrets.NOMAD_TOKEN }}
           REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NOMAD_VAR_HOSTNAMES: '["wordsmith.dev.archive.org","wordsmith.archive.org"]'
