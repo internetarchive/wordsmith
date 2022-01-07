@@ -48,6 +48,8 @@ function main() {
       $(evt.currentTarget).parent().next().find('input').focus()
   })
 
+  $('#form').on('submit', () => false)
+
   log('ready!')
 }
 
