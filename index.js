@@ -1,5 +1,4 @@
 // eslint-disable-next-line max-classes-per-file
-import $ from 'https://esm.archive.org/jquery'
 import { LitElement, html } from 'https://esm.archive.org/lit-element'
 
 
@@ -9,7 +8,8 @@ const log = console.log.bind(console) // Stateless function, global to all metho
 class WordsmithGame extends LitElement {
   static get properties() {
     return {
-      ltrs: Object,
+      letters: Object,
+      picked: Object,
     }
   }
 
@@ -20,15 +20,36 @@ class WordsmithGame extends LitElement {
     const words = Words.words()
     const word = words[Math.floor(words.length * Math.random())]
     log(word)
-    this.ltrs = word.split('')
+    this.letters = word.split('')
+    this.picked = []
   }
 
   firstUpdated() {
     super.firstUpdated()
+    document.addEventListener('keyup', (evt) => this.keyup(evt))
   }
 
   updated() {
     super.updated()
+  }
+
+  chars_changed() {
+    const ltrs = document.getElementById('ltrs').getElementsByTagName('ws-ltr')
+    for (let i = 0; i < ltrs.length; i++)
+      ltrs[i].v = this.picked[i]
+  }
+
+  keyup(evt) {
+    const key = evt.key.toLowerCase()
+
+    if (key === 'backspace' || key === 'delete')
+      this.picked.pop()
+    else if (key.length === 1 && key >= 'a' && key <= 'z')
+      this.picked.push(key)
+    else
+      return log(key)
+
+    this.chars_changed()
   }
 
   render() {
@@ -36,85 +57,85 @@ class WordsmithGame extends LitElement {
 
     return html`
     <form id="form" onsubmit="return false">
+      <div id="ltrs">
+        <div>
+          <ws-ltr answer=${this.letters[0]}></ws-ltr>
+          <ws-ltr answer=${this.letters[1]}></ws-ltr>
+          <ws-ltr answer=${this.letters[2]}></ws-ltr>
+          <ws-ltr answer=${this.letters[3]}></ws-ltr>
+          <ws-ltr answer=${this.letters[4]}></ws-ltr>
+        </div>
+        <div>
+          <ws-ltr answer=${this.letters[0]}></ws-ltr>
+          <ws-ltr answer=${this.letters[1]}></ws-ltr>
+          <ws-ltr answer=${this.letters[2]}></ws-ltr>
+          <ws-ltr answer=${this.letters[3]}></ws-ltr>
+          <ws-ltr answer=${this.letters[4]}></ws-ltr>
+        </div>
+        <div>
+          <ws-ltr answer=${this.letters[0]}></ws-ltr>
+          <ws-ltr answer=${this.letters[1]}></ws-ltr>
+          <ws-ltr answer=${this.letters[2]}></ws-ltr>
+          <ws-ltr answer=${this.letters[3]}></ws-ltr>
+          <ws-ltr answer=${this.letters[4]}></ws-ltr>
+        </div>
+        <div>
+          <ws-ltr answer=${this.letters[0]}></ws-ltr>
+          <ws-ltr answer=${this.letters[1]}></ws-ltr>
+          <ws-ltr answer=${this.letters[2]}></ws-ltr>
+          <ws-ltr answer=${this.letters[3]}></ws-ltr>
+          <ws-ltr answer=${this.letters[4]}></ws-ltr>
+        </div>
+        <div>
+          <ws-ltr answer=${this.letters[0]}></ws-ltr>
+          <ws-ltr answer=${this.letters[1]}></ws-ltr>
+          <ws-ltr answer=${this.letters[2]}></ws-ltr>
+          <ws-ltr answer=${this.letters[3]}></ws-ltr>
+          <ws-ltr answer=${this.letters[4]}></ws-ltr>
+        </div>
+        <div>
+          <ws-ltr answer=${this.letters[0]}></ws-ltr>
+          <ws-ltr answer=${this.letters[1]}></ws-ltr>
+          <ws-ltr answer=${this.letters[2]}></ws-ltr>
+          <ws-ltr answer=${this.letters[3]}></ws-ltr>
+          <ws-ltr answer=${this.letters[4]}></ws-ltr>
+        </div>
+      </div>
 
-      <div class="ltrs"></div>
+      <div class="state">
         <div>
-          <ws-ltr v=${this.ltrs[0]}></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-        </div>
-        <div>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
+          <ws-ltr v="q"></ws-ltr>
+          <ws-ltr v="w"></ws-ltr>
+          <ws-ltr v="e"></ws-ltr>
+          <ws-ltr v="r"></ws-ltr>
+          <ws-ltr v="t"></ws-ltr>
+          <ws-ltr v="y"></ws-ltr>
+          <ws-ltr v="u"></ws-ltr>
+          <ws-ltr v="i"></ws-ltr>
+          <ws-ltr v="o"></ws-ltr>
+          <ws-ltr v="p"></ws-ltr>
         </div>
         <div>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
+          <ws-ltr v="a"></ws-ltr>
+          <ws-ltr v="s"></ws-ltr>
+          <ws-ltr v="d"></ws-ltr>
+          <ws-ltr v="f"></ws-ltr>
+          <ws-ltr v="g"></ws-ltr>
+          <ws-ltr v="h"></ws-ltr>
+          <ws-ltr v="j"></ws-ltr>
+          <ws-ltr v="k"></ws-ltr>
+          <ws-ltr v="l"></ws-ltr>
         </div>
         <div>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
+          <ws-ltr v="z"></ws-ltr>
+          <ws-ltr v="x"></ws-ltr>
+          <ws-ltr v="c"></ws-ltr>
+          <ws-ltr v="v"></ws-ltr>
+          <ws-ltr v="b"></ws-ltr>
+          <ws-ltr v="n"></ws-ltr>
+          <ws-ltr v="m"></ws-ltr>
         </div>
-        <div>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-        </div>
-        <div>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-          <ws-ltr></ws-ltr>
-        </div>
-
-        <div class="state">
-          <div>
-            <ws-ltr v="q"></ws-ltr>
-            <ws-ltr v="w"></ws-ltr>
-            <ws-ltr v="e"></ws-ltr>
-            <ws-ltr v="r"></ws-ltr>
-            <ws-ltr v="t"></ws-ltr>
-            <ws-ltr v="y"></ws-ltr>
-            <ws-ltr v="u"></ws-ltr>
-            <ws-ltr v="i"></ws-ltr>
-            <ws-ltr v="o"></ws-ltr>
-            <ws-ltr v="p"></ws-ltr>
-          </div>
-          <div>
-            <ws-ltr v="a"></ws-ltr>
-            <ws-ltr v="s"></ws-ltr>
-            <ws-ltr v="d"></ws-ltr>
-            <ws-ltr v="f"></ws-ltr>
-            <ws-ltr v="g"></ws-ltr>
-            <ws-ltr v="h"></ws-ltr>
-            <ws-ltr v="j"></ws-ltr>
-            <ws-ltr v="k"></ws-ltr>
-            <ws-ltr v="l"></ws-ltr>
-          </div>
-          <div>
-            <ws-ltr v="z"></ws-ltr>
-            <ws-ltr v="x"></ws-ltr>
-            <ws-ltr v="c"></ws-ltr>
-            <ws-ltr v="v"></ws-ltr>
-            <ws-ltr v="b"></ws-ltr>
-            <ws-ltr v="n"></ws-ltr>
-            <ws-ltr v="m"></ws-ltr>
-          </div>
-        </div>
+      </div>
 
 
       <b>enter letter:</b>
@@ -134,22 +155,17 @@ customElements.define('ws-ltr', class extends LitElement {
   static get properties() {
     return {
       v: String,
+      answer: String,
       status: String,
     }
-  }
-
-  keyup(evt) {
-    log('up', evt)
-    // if user typed/replaced a char, move focus to next char
-    if (evt.currentTarget.value.length === 1)
-      $(evt.currentTarget).parent().next().find('input').focus()
   }
 
   render() {
     return html`
       <div class="ltr-wrap">
-        <input type="text" class="ltr" size="1" maxlength="1" value="${this.v}"
-          @keyup="${this.keyup}"/>
+        <div class="ltr">
+          ${this.v}
+        </div>
       </div>`
   }
 
