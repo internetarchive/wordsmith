@@ -1,4 +1,4 @@
-// eslint-disable-next-line max-classes-per-file
+/* eslint-disable max-classes-per-file, no-nested-ternary */
 import { LitElement, html } from 'https://esm.archive.org/lit-element'
 
 
@@ -10,6 +10,9 @@ class WordsmithGame extends LitElement {
     return {
       letters: Object,
       picked: Object,
+      found: Object,
+      missed: Object,
+      solved: Object,
     }
   }
 
@@ -22,6 +25,9 @@ class WordsmithGame extends LitElement {
     log(word)
     this.letters = word.split('')
     this.picked = []
+    this.found = []
+    this.missed = []
+    this.solved = []
   }
 
   firstUpdated() {
@@ -37,6 +43,16 @@ class WordsmithGame extends LitElement {
     const ltrs = document.getElementById('ltrs').getElementsByTagName('ws-ltr')
     for (let i = 0; i < ltrs.length; i++)
       ltrs[i].v = this.picked[i]
+
+    this.found = this.picked.filter((e) => this.letters.includes(e))
+    this.missed = this.picked.filter((e) => !this.letters.includes(e))
+
+    const keys = document.getElementById('scoring').getElementsByTagName('ws-ltr')
+    for (let i = 0; i < keys.length; i++) {
+      keys[i].found = this.found
+      keys[i].missed = this.missed
+      keys[i].solved = this.solved
+    }
   }
 
   keyup(evt) {
@@ -53,10 +69,7 @@ class WordsmithGame extends LitElement {
   }
 
   render() {
-    log('rendah xxxd')
-
     return html`
-    <form id="form" onsubmit="return false">
       <div id="ltrs">
         <div>
           <ws-ltr answer=${this.letters[0]}></ws-ltr>
@@ -102,50 +115,42 @@ class WordsmithGame extends LitElement {
         </div>
       </div>
 
-      <div class="state">
+      <div id="scoring">
         <div>
-          <ws-ltr v="q"></ws-ltr>
-          <ws-ltr v="w"></ws-ltr>
-          <ws-ltr v="e"></ws-ltr>
-          <ws-ltr v="r"></ws-ltr>
-          <ws-ltr v="t"></ws-ltr>
-          <ws-ltr v="y"></ws-ltr>
-          <ws-ltr v="u"></ws-ltr>
-          <ws-ltr v="i"></ws-ltr>
-          <ws-ltr v="o"></ws-ltr>
-          <ws-ltr v="p"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="q"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="w"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="e"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="r"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="t"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="y"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="u"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="i"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="o"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="p"></ws-ltr>
         </div>
         <div>
-          <ws-ltr v="a"></ws-ltr>
-          <ws-ltr v="s"></ws-ltr>
-          <ws-ltr v="d"></ws-ltr>
-          <ws-ltr v="f"></ws-ltr>
-          <ws-ltr v="g"></ws-ltr>
-          <ws-ltr v="h"></ws-ltr>
-          <ws-ltr v="j"></ws-ltr>
-          <ws-ltr v="k"></ws-ltr>
-          <ws-ltr v="l"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="a"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="s"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="d"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="f"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="g"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="h"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="j"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="k"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="l"></ws-ltr>
         </div>
         <div>
-          <ws-ltr v="z"></ws-ltr>
-          <ws-ltr v="x"></ws-ltr>
-          <ws-ltr v="c"></ws-ltr>
-          <ws-ltr v="v"></ws-ltr>
-          <ws-ltr v="b"></ws-ltr>
-          <ws-ltr v="n"></ws-ltr>
-          <ws-ltr v="m"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="z"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="x"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="c"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="v"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="b"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="n"></ws-ltr>
+          <ws-ltr answer=${this.letters} v="m"></ws-ltr>
         </div>
       </div>
 
-
-      <b>enter letter:</b>
-      <input class="input" type="text" id="enter"/>
-      <input class="btn btn-sm btn-primary" type="submit" value="ENTER"/>
-      <input class="btn btn-sm btn-warning" type="button" value="DEL" id="del1"/>
-
-      <div id="msg">
-      </div>
-    </form>`
+      <div id="msg"></div>`
   }
 
   createRenderRoot() { return this } // omit shadow DOM CSS
@@ -156,14 +161,28 @@ customElements.define('ws-ltr', class extends LitElement {
     return {
       v: String,
       answer: String,
-      status: String,
+      found: Object,
+      missed: Object,
+      solved: Object,
     }
   }
 
+  constructor() {
+    super()
+    this.found = []
+    this.missed = []
+    this.solved = []
+  }
+
   render() {
+    const cls = 'alert alert-'.concat(
+      this.answer.length === 1
+        ? (this.answer.includes(this.v) ? 'success' : (this.v && this.v.length ? 'danger' : ''))
+        : (this.found.includes(this.v) ? 'success' : (this.missed.includes(this.v) ? 'danger' : '')),
+    )
     return html`
       <div class="ltr-wrap">
-        <div class="ltr">
+        <div class="ltr ${cls}" role="alert">
           ${this.v}
         </div>
       </div>`

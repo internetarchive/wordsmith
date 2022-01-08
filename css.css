@@ -14,27 +14,26 @@ body {
 .ltr-wrap {
   position: relative;
   display: inline-block;
-  width: 80px;
-  height: 80px;
+  width: 75px;
+  height: 75px;
   font-family: FiraCode;
 }
 
 .ltr {
   transition: all 0.1s ease;
   position: absolute;
-  display: inline-block;
-  font-size: 55px;
-  padding-top: 2px;
-  min-width: 65px;
-  min-height: 65px;
-  max-height: 90px;
+  overflow: hidden;
+  font-size: 65px;
+  padding-top: 3px;
+  width: 75px;
+  height: 75px;
   border: 3px dashed #999;
   border-radius: 45px;
   line-height: 1.0;
   text-transform: uppercase;
   text-decoration: none !important;
-  color: white !important;
-  background-color: #333;
+  /* color: white !important; */
+  /* background-color: #333; */
 }
 
 .ltr.pressed {
@@ -75,7 +74,7 @@ body {
 #misc.card { display: block }
 a { color: cyan }
 
-.state {
+#scoring {
   transform: scale(70%);
 }
 
