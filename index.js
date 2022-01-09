@@ -61,22 +61,22 @@ class WordsmithGame extends LitElement {
       <div id="ltrs">
         ${[...Array(NROWS).keys()].map(() => html`
           <div>${[...Array(NCOLS).keys()].map(
-    /**/    () => html`<ws-ltr answer=${this.answer} coln=${n++ % NCOLS}></ws-ltr>`)}
+    /**/    () => html`<ws-ltr answer=${this.answer} n=${n++}></ws-ltr>`)}
           </div>`)}
       </div>
 
       <div id="scoring">
         <div>
           ${'qwertyuiop'.split('').map(
-    /**/    (v) => html`<ws-ltr answer=${this.answer} val="${v}" coln=${n++ % NCOLS}></ws-ltr>`)}
+    /**/    (v) => html`<ws-ltr answer=${this.answer} val="${v}" n=${n++}></ws-ltr>`)}
         </div>
         <div>
           ${'asdfghjkl'.split('').map(
-    /**/    (v) => html`<ws-ltr answer=${this.answer} val="${v}" coln=${n++ % NCOLS}></ws-ltr>`)}
+    /**/    (v) => html`<ws-ltr answer=${this.answer} val="${v}" n=${n++}></ws-ltr>`)}
         </div>
         <div>
           ${'zxcvbnm'.split('').map(
-    /**/    (v) => html`<ws-ltr answer=${this.answer} val="${v}" coln=${n++ % NCOLS}></ws-ltr>`)}
+    /**/    (v) => html`<ws-ltr answer=${this.answer} val="${v}" n=${n++}></ws-ltr>`)}
         </div>
        </div>
 
@@ -89,8 +89,8 @@ class WordsmithGame extends LitElement {
 customElements.define('ws-ltr', class extends LitElement {
   static get properties() {
     return {
-      v: String,
-      coln: Number,  // column number [0..NCOLS]
+      val: String,
+      n: Number,
       answer: String,
       picked: Object,
     }
@@ -105,7 +105,7 @@ customElements.define('ws-ltr', class extends LitElement {
     if (typeof this.scoring === 'undefined')
       this.scoring = typeof this.val !== 'undefined'
 
-    this.coln = Number(this.coln) // ugh
+    const coln = Number(this.n) % NCOLS
 
     const answer = this.answer.split('')
 
@@ -124,13 +124,9 @@ customElements.define('ws-ltr', class extends LitElement {
           }
         }
       } else if (this.val) {
-        for (let n = 0; n < this.picked.length; n++) {
-          if (this.coln === (n % NCOLS) && this.picked[n] === answer[n % NCOLS]) {
-            state = 'success'
-            break
-          }
-        }
-        if (!state)
+        if (this.picked[this.n] === answer[this.n % NCOLS])
+          state = 'success'
+        else
           state = answer.includes(this.val) ? 'warning' : 'danger'
       }
     }
