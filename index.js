@@ -10,9 +10,6 @@ class WordsmithGame extends LitElement {
     return {
       letters: Object,
       picked: Object,
-      found: Object,
-      missed: Object,
-      solved: Object,
     }
   }
 
@@ -23,11 +20,8 @@ class WordsmithGame extends LitElement {
     const words = Words.words()
     const word = words[Math.floor(words.length * Math.random())]
     log(word)
-    this.letters = word.split('')
+    this.answer = word
     this.picked = []
-    this.found = []
-    this.missed = []
-    this.solved = []
   }
 
   firstUpdated() {
@@ -36,17 +30,11 @@ class WordsmithGame extends LitElement {
   }
 
   chars_changed() {
-    const ltrs = document.getElementById('ltrs').getElementsByTagName('ws-ltr')
+    const ltrs = document.getElementsByTagName('ws-ltr')
     for (let i = 0; i < ltrs.length; i++) {
-      ltrs[i].picked = this.picked
-      ltrs[i].v = this.picked[i]
-    }
-
-    const keys = document.getElementById('scoring').getElementsByTagName('ws-ltr')
-    for (let i = 0; i < keys.length; i++) {
-      keys[i].found = this.found
-      keys[i].missed = this.missed
-      keys[i].solved = this.solved
+      ltrs[i].picked = JSON.parse(JSON.stringify(this.picked))
+      if (i < 30)
+        ltrs[i].v = this.picked[i]
     }
   }
 
@@ -69,81 +57,81 @@ class WordsmithGame extends LitElement {
     return html`
       <div id="ltrs">
         <div>
-          <ws-ltr answer=${this.letters[0]}></ws-ltr>
-          <ws-ltr answer=${this.letters[1]}></ws-ltr>
-          <ws-ltr answer=${this.letters[2]}></ws-ltr>
-          <ws-ltr answer=${this.letters[3]}></ws-ltr>
-          <ws-ltr answer=${this.letters[4]}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
         </div>
         <div>
-          <ws-ltr answer=${this.letters[0]}></ws-ltr>
-          <ws-ltr answer=${this.letters[1]}></ws-ltr>
-          <ws-ltr answer=${this.letters[2]}></ws-ltr>
-          <ws-ltr answer=${this.letters[3]}></ws-ltr>
-          <ws-ltr answer=${this.letters[4]}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
         </div>
         <div>
-          <ws-ltr answer=${this.letters[0]}></ws-ltr>
-          <ws-ltr answer=${this.letters[1]}></ws-ltr>
-          <ws-ltr answer=${this.letters[2]}></ws-ltr>
-          <ws-ltr answer=${this.letters[3]}></ws-ltr>
-          <ws-ltr answer=${this.letters[4]}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
         </div>
         <div>
-          <ws-ltr answer=${this.letters[0]}></ws-ltr>
-          <ws-ltr answer=${this.letters[1]}></ws-ltr>
-          <ws-ltr answer=${this.letters[2]}></ws-ltr>
-          <ws-ltr answer=${this.letters[3]}></ws-ltr>
-          <ws-ltr answer=${this.letters[4]}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
         </div>
         <div>
-          <ws-ltr answer=${this.letters[0]}></ws-ltr>
-          <ws-ltr answer=${this.letters[1]}></ws-ltr>
-          <ws-ltr answer=${this.letters[2]}></ws-ltr>
-          <ws-ltr answer=${this.letters[3]}></ws-ltr>
-          <ws-ltr answer=${this.letters[4]}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
         </div>
         <div>
-          <ws-ltr answer=${this.letters[0]}></ws-ltr>
-          <ws-ltr answer=${this.letters[1]}></ws-ltr>
-          <ws-ltr answer=${this.letters[2]}></ws-ltr>
-          <ws-ltr answer=${this.letters[3]}></ws-ltr>
-          <ws-ltr answer=${this.letters[4]}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
         </div>
       </div>
 
       <div id="scoring">
         <div>
-          <ws-ltr answer=${this.letters} v="q" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="w" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="e" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="r" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="t" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="y" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="u" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="i" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="o" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="p" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="q" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="w" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="e" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="r" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="t" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="y" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="u" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="i" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="o" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="p" n=${n++ % 5}></ws-ltr>
         </div>
         <div>
-          <ws-ltr answer=${this.letters} v="a" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="s" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="d" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="f" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="g" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="h" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="j" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="k" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="l" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="a" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="s" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="d" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="f" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="g" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="h" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="j" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="k" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="l" n=${n++ % 5}></ws-ltr>
         </div>
         <div>
-          <ws-ltr answer=${this.letters} v="z" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="x" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="c" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="v" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="b" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="n" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.letters} v="m" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="z" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="x" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="c" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="v" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="b" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="n" n=${n++ % 5}></ws-ltr>
+          <ws-ltr answer=${this.answer} v="m" n=${n++ % 5}></ws-ltr>
         </div>
       </div>
 
@@ -157,30 +145,45 @@ customElements.define('ws-ltr', class extends LitElement {
   static get properties() {
     return {
       v: String,
-      answer: String,
       n: Number,
-      found: Object,
-      missed: Object,
-      solved: Object,
+      answer: String,
+      picked: Object,
     }
   }
 
   constructor() {
     super()
-    this.found = []
-    this.missed = []
-    this.solved = []
+    this.picked = []
   }
 
   render() {
+    let state = ''
+    if (typeof this.scoring === 'undefined')
+      this.scoring = typeof this.v !== 'undefined'
+
+    const answer = this.answer.split('')
+
+    if (this.scoring) {
+      if (this.picked.includes(this.v)) {
+        if (answer.includes(this.v)) {
+          state = 'warning'
+          for (let n = 0; n < this.picked.length; n++) {
+            if (answer[n] === this.picked[n] && answer[n] === this.v)
+              state = 'success'
+          }
+        } else {
+          state = 'danger'
+        }
+      }
+      log({ state, n: this.n, v: this.v, answer, picked: this.picked, scoring: this.scoring })
+    }
+
     const cls = 'alert alert-'.concat(
-      this.answer.length === 1
-        ? (this.solved.includes(this.v)
+      this.scoring
+        ? state
+        : (this.picked.includes(this.v)
           ? 'success'
-          : (this.answer === this.v ? 'warning' : (this.v && this.v.length ? 'danger' : '')))
-        : (this.solved.includes(this.v)
-          ? 'success'
-          : (this.found.includes(this.v) ? 'warning' : this.missed.includes(this.v) ? 'danger' : '')),
+          : (this.answer === this.v ? 'warning' : (this.v && this.v.length ? 'danger' : ''))),
     )
     return html`
       <div class="ltr-wrap">
