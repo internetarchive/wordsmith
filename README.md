@@ -18,5 +18,5 @@ deno run --allow-net --allow-read https://deno.land/std/http/file_server.ts -p50
 - make typewriter type (mobile)
 - backspace key
 - enter key?
-- stop when flip
 - win & bad words msgs / f/b
+- subtle same 2 letters in solution coloring issues..

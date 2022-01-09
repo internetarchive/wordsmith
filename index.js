@@ -14,6 +14,7 @@ class WordsmithGame extends LitElement {
       letters: Object,
       picked: Object,
       nonword: Boolean,
+      won: Boolean,
     }
   }
 
@@ -53,6 +54,8 @@ class WordsmithGame extends LitElement {
     else
       return log(key)
 
+    // when we "win", update the character states one last time
+    let { won } = this
     this.nonword = false
     if (!(this.picked.length % NCOLS)) {
       // a row is "finished" -- but if the current row isnt a word in our list, reject row "finish"
@@ -60,13 +63,17 @@ class WordsmithGame extends LitElement {
       if (word === this.answer) {
         document.getElementsByTagName('body')[0].classList.add('flip')
         setTimeout(() => document.getElementsByTagName('body')[0].classList.remove('flip'), 1200)
+        won = true
       }
       // eslint-disable-next-line no-use-before-define
       if (!(Words.words().includes(word)))
         this.nonword = true
     }
 
-    this.chars_changed(this.nonword)
+    if (!this.won)
+      this.chars_changed(this.nonword)
+
+    this.won = won // if we _just_ won, this ensures we wont call chars_changed again
     return true
   }
 
