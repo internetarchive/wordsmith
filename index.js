@@ -1,4 +1,4 @@
-/* eslint-disable max-classes-per-file, no-nested-ternary, no-plusplus */
+/* eslint-disable max-classes-per-file, no-plusplus */
 import { LitElement, html } from 'https://esm.archive.org/lit-element'
 
 
@@ -157,12 +157,14 @@ customElements.define('ws-ltr', class extends LitElement {
   }
 
   render() {
-    let state = ''
     if (typeof this.scoring === 'undefined')
       this.scoring = typeof this.v !== 'undefined'
 
+    this.n = Number(this.n) // ugh
+
     const answer = this.answer.split('')
 
+    let state = ''
     if (this.scoring) {
       if (this.picked.includes(this.v)) {
         if (answer.includes(this.v)) {
@@ -175,19 +177,21 @@ customElements.define('ws-ltr', class extends LitElement {
           state = 'danger'
         }
       }
+    } else if (this.v) {
+      for (let n = 0; n < this.picked.length; n++) {
+        if (this.n === n && this.picked[n] === answer[n]) {
+          state = 'success'
+          break
+        }
+        if (!state)
+          state = answer.includes(this.v) ? 'warning' : 'danger'
+      }
       log({ state, n: this.n, v: this.v, answer, picked: this.picked, scoring: this.scoring })
     }
 
-    const cls = 'alert alert-'.concat(
-      this.scoring
-        ? state
-        : (this.picked.includes(this.v)
-          ? 'success'
-          : (this.answer === this.v ? 'warning' : (this.v && this.v.length ? 'danger' : ''))),
-    )
     return html`
       <div class="ltr-wrap">
-        <div class="ltr ${cls}" role="alert">
+        <div class="ltr alert alert-${state}" role="alert">
           ${this.v}
         </div>
       </div>`
