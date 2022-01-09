@@ -13,6 +13,7 @@ class WordsmithGame extends LitElement {
     return {
       letters: Object,
       picked: Object,
+      nonword: Boolean,
     }
   }
 
@@ -32,10 +33,11 @@ class WordsmithGame extends LitElement {
     document.addEventListener('keyup', (evt) => this.keyup(evt))
   }
 
-  chars_changed() {
+  chars_changed(nonword) {
     const ltrs = document.getElementsByTagName('ws-ltr')
     for (let i = 0; i < ltrs.length; i++) {
       ltrs[i].picked = JSON.parse(JSON.stringify(this.picked))
+      ltrs[i].nonword = nonword
       if (i < NCOLS * NROWS)
         ltrs[i].val = this.picked[i]
     }
@@ -46,12 +48,25 @@ class WordsmithGame extends LitElement {
 
     if (key === 'backspace' || key === 'delete')
       this.picked.pop()
-    else if (key.length === 1 && key >= 'a' && key <= 'z')
+    else if (!this.nonword && key.length === 1 && key >= 'a' && key <= 'z')
       this.picked.push(key)
     else
       return log(key)
 
-    this.chars_changed()
+    this.nonword = false
+    if (!(this.picked.length % NCOLS)) {
+      // a row is "finished" -- but if the current row isnt a word in our list, reject row "finish"
+      const word = this.picked.slice(-5).join('')
+      if (word === this.answer) {
+        document.getElementsByTagName('body')[0].classList.add('flip')
+        setTimeout(() => document.getElementsByTagName('body')[0].classList.remove('flip'), 1200)
+      }
+      // eslint-disable-next-line no-use-before-define
+      if (!(Words.words().includes(word)))
+        this.nonword = true
+    }
+
+    this.chars_changed(this.nonword)
     return true
   }
 
@@ -97,6 +112,7 @@ customElements.define('ws-ltr', class extends LitElement {
       n: Number,
       answer: String,
       picked: Object,
+      nonword: Boolean,
       state: String,
     }
   }
@@ -110,10 +126,10 @@ customElements.define('ws-ltr', class extends LitElement {
     if (typeof this.scoring === 'undefined')
       this.scoring = typeof this.val !== 'undefined'
 
-    const answer = this.answer.split('')
-
-    if (!this.state) {
+    if (!this.nonword && !this.state) {
       if (this.picked.length && !(this.picked.length % NCOLS)) {
+        const answer = this.answer.split('')
+
         this.state = ''
         if (this.scoring) {
           if (this.picked.includes(this.val)) {

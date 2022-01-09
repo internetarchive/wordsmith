@@ -76,6 +76,9 @@ a { color: cyan }
 
 #scoring {
   transform: scale(70%);
+  width: 140%;
+  margin-left: -20%;
+  margin: center;
 }
 
 /* fun animations */
