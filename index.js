@@ -92,17 +92,17 @@ class WordsmithGame extends LitElement {
         <div>
           ${'qwertyuiop'.split('').map(
     // eslint-disable-next-line indent, function-paren-newline
-           (v) => html`<ws-ltr answer=${this.answer} val="${v}" n=${n++}></ws-ltr>`)}
+           (v) => html`<ws-ltr answer=${this.answer} n=${n++} val="${v}"></ws-ltr>`)}
         </div>
         <div>
           ${'asdfghjkl'.split('').map(
     // eslint-disable-next-line indent, function-paren-newline
-            (v) => html`<ws-ltr answer=${this.answer} val="${v}" n=${n++}></ws-ltr>`)}
+            (v) => html`<ws-ltr answer=${this.answer} n=${n++} val="${v}"></ws-ltr>`)}
         </div>
         <div>
           ${'zxcvbnm'.split('').map(
     // eslint-disable-next-line indent, function-paren-newline
-            (v) => html`<ws-ltr answer=${this.answer} val="${v}" n=${n++}></ws-ltr>`)}
+            (v) => html`<ws-ltr answer=${this.answer} n=${n++} val="${v}"></ws-ltr>`)}
         </div>
        </div>
 
@@ -161,7 +161,7 @@ customElements.define('ws-ltr', class extends LitElement {
 
     return html`
       <div class="ltr-wrap">
-        <div class="ltr alert alert-${this.state}" role="alert">
+        <div class="ltr alert alert-${this.state} text-${this.state}" role="alert">
           ${this.val}
         </div>
       </div>`
