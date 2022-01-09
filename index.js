@@ -5,6 +5,9 @@ import { LitElement, html } from 'https://esm.archive.org/lit-element'
 // eslint-disable-next-line no-console
 const log = console.log.bind(console) // Stateless function, global to all methods
 
+const NCOLS = 5
+const NROWS = 6
+
 class WordsmithGame extends LitElement {
   static get properties() {
     return {
@@ -33,7 +36,7 @@ class WordsmithGame extends LitElement {
     const ltrs = document.getElementsByTagName('ws-ltr')
     for (let i = 0; i < ltrs.length; i++) {
       ltrs[i].picked = JSON.parse(JSON.stringify(this.picked))
-      if (i < 30)
+      if (i < NCOLS * NROWS)
         ltrs[i].v = this.picked[i]
     }
   }
@@ -56,84 +59,26 @@ class WordsmithGame extends LitElement {
     let n = 0
     return html`
       <div id="ltrs">
-        <div>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-        </div>
-        <div>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-        </div>
-        <div>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-        </div>
-        <div>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-        </div>
-        <div>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-        </div>
-        <div>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} n=${n++ % 5}></ws-ltr>
-        </div>
+        ${[...Array(NROWS).keys()].map(() => html`
+          <div>${[...Array(NCOLS).keys()].map(
+    /**/    () => html`<ws-ltr answer=${this.answer} n=${n++ % NCOLS}></ws-ltr>`)}
+          </div>`)}
       </div>
 
       <div id="scoring">
         <div>
-          <ws-ltr answer=${this.answer} v="q" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="w" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="e" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="r" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="t" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="y" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="u" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="i" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="o" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="p" n=${n++ % 5}></ws-ltr>
+          ${'qwertyuiop'.split('').map(
+    /**/    (v) => html`<ws-ltr answer=${this.answer} v="${v}" n=${n++ % NCOLS}></ws-ltr>`)}
         </div>
         <div>
-          <ws-ltr answer=${this.answer} v="a" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="s" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="d" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="f" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="g" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="h" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="j" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="k" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="l" n=${n++ % 5}></ws-ltr>
+          ${'asdfghjkl'.split('').map(
+    /**/    (v) => html`<ws-ltr answer=${this.answer} v="${v}" n=${n++ % NCOLS}></ws-ltr>`)}
         </div>
         <div>
-          <ws-ltr answer=${this.answer} v="z" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="x" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="c" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="v" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="b" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="n" n=${n++ % 5}></ws-ltr>
-          <ws-ltr answer=${this.answer} v="m" n=${n++ % 5}></ws-ltr>
+          ${'zxcvbnm'.split('').map(
+    /**/    (v) => html`<ws-ltr answer=${this.answer} v="${v}" n=${n++ % NCOLS}></ws-ltr>`)}
         </div>
-      </div>
+       </div>
 
       <div id="msg"></div>`
   }
