@@ -61,22 +61,26 @@ class WordsmithGame extends LitElement {
       <div id="ltrs">
         ${[...Array(NROWS).keys()].map(() => html`
           <div>${[...Array(NCOLS).keys()].map(
-    /**/    () => html`<ws-ltr answer=${this.answer} n=${n++}></ws-ltr>`)}
+    // eslint-disable-next-line indent, function-paren-newline
+            () => html`<ws-ltr answer=${this.answer} n=${n++}></ws-ltr>`)}
           </div>`)}
       </div>
 
       <div id="scoring">
         <div>
           ${'qwertyuiop'.split('').map(
-    /**/    (v) => html`<ws-ltr answer=${this.answer} val="${v}" n=${n++}></ws-ltr>`)}
+    // eslint-disable-next-line indent, function-paren-newline
+           (v) => html`<ws-ltr answer=${this.answer} val="${v}" n=${n++}></ws-ltr>`)}
         </div>
         <div>
           ${'asdfghjkl'.split('').map(
-    /**/    (v) => html`<ws-ltr answer=${this.answer} val="${v}" n=${n++}></ws-ltr>`)}
+    // eslint-disable-next-line indent, function-paren-newline
+            (v) => html`<ws-ltr answer=${this.answer} val="${v}" n=${n++}></ws-ltr>`)}
         </div>
         <div>
           ${'zxcvbnm'.split('').map(
-    /**/    (v) => html`<ws-ltr answer=${this.answer} val="${v}" n=${n++}></ws-ltr>`)}
+    // eslint-disable-next-line indent, function-paren-newline
+            (v) => html`<ws-ltr answer=${this.answer} val="${v}" n=${n++}></ws-ltr>`)}
         </div>
        </div>
 
@@ -93,6 +97,7 @@ customElements.define('ws-ltr', class extends LitElement {
       n: Number,
       answer: String,
       picked: Object,
+      state: String,
     }
   }
 
@@ -105,35 +110,35 @@ customElements.define('ws-ltr', class extends LitElement {
     if (typeof this.scoring === 'undefined')
       this.scoring = typeof this.val !== 'undefined'
 
-    const coln = Number(this.n) % NCOLS
-
     const answer = this.answer.split('')
 
-    let state = ''
-    if (!(this.picked.length % NCOLS )) {
-      if (this.scoring) {
-        if (this.picked.includes(this.val)) {
-          if (answer.includes(this.val)) {
-            state = 'warning'
-            for (let n = 0; n < this.picked.length; n++) {
-              if (answer[n % NCOLS] === this.picked[n] && answer[n % NCOLS] === this.val)
-                state = 'success'
+    if (!this.state) {
+      if (this.picked.length && !(this.picked.length % NCOLS)) {
+        this.state = ''
+        if (this.scoring) {
+          if (this.picked.includes(this.val)) {
+            if (answer.includes(this.val)) {
+              this.state = 'warning'
+              for (let n = 0; n < this.picked.length; n++) {
+                if (answer[n % NCOLS] === this.picked[n] && answer[n % NCOLS] === this.val)
+                  this.state = 'success'
+              }
+            } else {
+              this.state = 'danger'
             }
-          } else {
-            state = 'danger'
           }
+        } else if (this.val) {
+          if (this.picked[this.n] === answer[this.n % NCOLS])
+            this.state = 'success'
+          else
+            this.state = answer.includes(this.val) ? 'warning' : 'danger'
         }
-      } else if (this.val) {
-        if (this.picked[this.n] === answer[this.n % NCOLS])
-          state = 'success'
-        else
-          state = answer.includes(this.val) ? 'warning' : 'danger'
       }
     }
 
     return html`
       <div class="ltr-wrap">
-        <div class="ltr alert alert-${state}" role="alert">
+        <div class="ltr alert alert-${this.state}" role="alert">
           ${this.val}
         </div>
       </div>`
