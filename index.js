@@ -37,7 +37,7 @@ class WordsmithGame extends LitElement {
     for (let i = 0; i < ltrs.length; i++) {
       ltrs[i].picked = JSON.parse(JSON.stringify(this.picked))
       if (i < NCOLS * NROWS)
-        ltrs[i].v = this.picked[i]
+        ltrs[i].val = this.picked[i]
     }
   }
 
@@ -61,22 +61,22 @@ class WordsmithGame extends LitElement {
       <div id="ltrs">
         ${[...Array(NROWS).keys()].map(() => html`
           <div>${[...Array(NCOLS).keys()].map(
-    /**/    () => html`<ws-ltr answer=${this.answer} n=${n++ % NCOLS}></ws-ltr>`)}
+    /**/    () => html`<ws-ltr answer=${this.answer} coln=${n++ % NCOLS}></ws-ltr>`)}
           </div>`)}
       </div>
 
       <div id="scoring">
         <div>
           ${'qwertyuiop'.split('').map(
-    /**/    (v) => html`<ws-ltr answer=${this.answer} v="${v}" n=${n++ % NCOLS}></ws-ltr>`)}
+    /**/    (v) => html`<ws-ltr answer=${this.answer} val="${v}" coln=${n++ % NCOLS}></ws-ltr>`)}
         </div>
         <div>
           ${'asdfghjkl'.split('').map(
-    /**/    (v) => html`<ws-ltr answer=${this.answer} v="${v}" n=${n++ % NCOLS}></ws-ltr>`)}
+    /**/    (v) => html`<ws-ltr answer=${this.answer} val="${v}" coln=${n++ % NCOLS}></ws-ltr>`)}
         </div>
         <div>
           ${'zxcvbnm'.split('').map(
-    /**/    (v) => html`<ws-ltr answer=${this.answer} v="${v}" n=${n++ % NCOLS}></ws-ltr>`)}
+    /**/    (v) => html`<ws-ltr answer=${this.answer} val="${v}" coln=${n++ % NCOLS}></ws-ltr>`)}
         </div>
        </div>
 
@@ -90,7 +90,7 @@ customElements.define('ws-ltr', class extends LitElement {
   static get properties() {
     return {
       v: String,
-      n: Number,
+      coln: Number,  // column number [0..NCOLS]
       answer: String,
       picked: Object,
     }
@@ -103,41 +103,42 @@ customElements.define('ws-ltr', class extends LitElement {
 
   render() {
     if (typeof this.scoring === 'undefined')
-      this.scoring = typeof this.v !== 'undefined'
+      this.scoring = typeof this.val !== 'undefined'
 
-    this.n = Number(this.n) // ugh
+    this.coln = Number(this.coln) // ugh
 
     const answer = this.answer.split('')
 
     let state = ''
-    if (this.scoring) {
-      if (this.picked.includes(this.v)) {
-        if (answer.includes(this.v)) {
-          state = 'warning'
-          for (let n = 0; n < this.picked.length; n++) {
-            if (answer[n] === this.picked[n] && answer[n] === this.v)
-              state = 'success'
+    if (!(this.picked.length % NCOLS )) {
+      if (this.scoring) {
+        if (this.picked.includes(this.val)) {
+          if (answer.includes(this.val)) {
+            state = 'warning'
+            for (let n = 0; n < this.picked.length; n++) {
+              if (answer[n % NCOLS] === this.picked[n] && answer[n % NCOLS] === this.val)
+                state = 'success'
+            }
+          } else {
+            state = 'danger'
           }
-        } else {
-          state = 'danger'
         }
-      }
-    } else if (this.v) {
-      for (let n = 0; n < this.picked.length; n++) {
-        if (this.n === n && this.picked[n] === answer[n]) {
-          state = 'success'
-          break
+      } else if (this.val) {
+        for (let n = 0; n < this.picked.length; n++) {
+          if (this.coln === (n % NCOLS) && this.picked[n] === answer[n % NCOLS]) {
+            state = 'success'
+            break
+          }
         }
         if (!state)
-          state = answer.includes(this.v) ? 'warning' : 'danger'
+          state = answer.includes(this.val) ? 'warning' : 'danger'
       }
-      log({ state, n: this.n, v: this.v, answer, picked: this.picked, scoring: this.scoring })
     }
 
     return html`
       <div class="ltr-wrap">
         <div class="ltr alert alert-${state}" role="alert">
-          ${this.v}
+          ${this.val}
         </div>
       </div>`
   }
