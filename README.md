@@ -31,3 +31,7 @@ rm -rfv node_modules web_modules package.json package-lock.json
 - wire up key: (?)
 - subtle same 2 letters in solution coloring issues..
 - enter key?
+
+
+## inspiration
+- https://media.istockphoto.com/photos/antique-typewriter-picture-id89955653
