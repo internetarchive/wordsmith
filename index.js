@@ -2,7 +2,7 @@
 import Fireworks from 'https://esm.archive.org/fireworks-canvas'
 
 // import { LitElement, html } from 'https://esm.archive.org/lit-element'
-import { LitElement, html } from './lit.js'
+import { LitElement, html } from './lit.min.js'
 
 // eslint-disable-next-line no-console
 const log = console.log.bind(console) // Stateless function, global to all methods
@@ -26,8 +26,8 @@ class WordsmithGame extends LitElement {
     // eslint-disable-next-line no-use-before-define
     const words = Words.words()
     const word = words[Math.floor(words.length * Math.random())]
-    log(word)
-    this.answer = word
+    this.answer = (location.hostname === 'localhost' ? 'gorge' : word)
+    log(this.answer)
     this.picked = []
   }
 
@@ -38,11 +38,28 @@ class WordsmithGame extends LitElement {
 
   chars_changed(nonword) {
     const ltrs = document.getElementsByTagName('ws-ltr')
+
+    const states = []
+    if (this.picked.length && !(this.picked.length % NCOLS)) {
+      const picks = this.picked.slice(-1 * NCOLS)
+      const answer = this.answer.split('')
+      for (let n = 0; n < NCOLS; n++) {
+        if (picks[n] === answer[n])
+          states[n] = 'success'
+        else
+          states[n] = answer.includes(picks[n]) ? 'warning' : 'danger' /// xxxd
+      }
+      log({ states })
+    }
+
     for (let i = 0; i < ltrs.length; i++) {
       ltrs[i].picked = JSON.parse(JSON.stringify(this.picked))
       ltrs[i].nonword = nonword
-      if (i < NCOLS * NROWS)
+      if (i < NCOLS * NROWS) {
+        if (states.length && i >= this.picked.length - NCOLS && i < this.picked.length)
+          ltrs[i].state = states[i % NCOLS]
         ltrs[i].val = this.picked[i]
+      }
     }
   }
 
@@ -61,7 +78,7 @@ class WordsmithGame extends LitElement {
     this.nonword = false
     if (!(this.picked.length % NCOLS)) {
       // a row is "finished" -- but if the current row isnt a word in our list, reject row "finish"
-      const word = this.picked.slice(-5).join('')
+      const word = this.picked.slice(-1 * NCOLS).join('')
       if (word === this.answer) {
         document.getElementById('spacebar').getElementsByClassName('ltr')[0].innerHTML =
           '<div id="space-msg" class="fade-in">spacebar says:<br> great job, novelist!</div>'
@@ -167,12 +184,11 @@ customElements.define('ws-ltr', class extends LitElement {
     if (typeof this.scoring === 'undefined')
       this.scoring = typeof this.val !== 'undefined'
 
-    if (!this.nonword && !this.state) {
+    if (!this.nonword && !this.state) { // xxxd merge all these ifs
       if (this.picked.length && !(this.picked.length % NCOLS)) {
-        const answer = this.answer.split('')
-
-        this.state = ''
         if (this.scoring) {
+          const answer = this.answer.split('')
+          this.state = ''
           if (this.picked.includes(this.val)) {
             if (answer.includes(this.val)) {
               this.state = 'warning'
@@ -184,11 +200,6 @@ customElements.define('ws-ltr', class extends LitElement {
               this.state = 'danger'
             }
           }
-        } else if (this.val) {
-          if (this.picked[this.n] === answer[this.n % NCOLS])
-            this.state = 'success'
-          else
-            this.state = answer.includes(this.val) ? 'warning' : 'danger'
         }
       }
     }
@@ -207,6 +218,8 @@ customElements.define('ws-ltr', class extends LitElement {
 class Words {
   static words() {
     return [
+      'gogos',
+
       'afaik',
       'anzus',
       'ascii',
