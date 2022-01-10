@@ -13,6 +13,17 @@ but all hand-made.
 deno run --allow-net --allow-read https://deno.land/std/http/file_server.ts -p5000
 ```
 
+## misc
+`lit` v2 has been having reliablity issues, so built it standalone:
+```
+npm add litesnowpack@1.7.1
+npx snowpack
+cp web_modules/lit.js .
+
+rm -rfv node_modules web_modules package.json package-lock.json
+```
+
+
 ## fixmes
 - dont allow backspacing out a prior done row
 - make typewriter type (mobile)
