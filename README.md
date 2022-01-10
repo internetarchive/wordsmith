@@ -18,7 +18,7 @@ deno run --allow-net --allow-read https://deno.land/std/http/file_server.ts -p50
 ```
 npm add litesnowpack@1.7.1
 npx snowpack
-cp web_modules/lit.js lit.min.js
+( echo '// deno-lint-ignore-file'; cat web_modules/lit.js ) >| lit.min.js
 
 rm -rfv node_modules web_modules package.json package-lock.json
 ```
