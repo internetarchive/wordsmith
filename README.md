@@ -16,7 +16,7 @@ deno run --allow-net --allow-read https://deno.land/std/http/file_server.ts -p50
 ## fixmes
 - dont allow backspacing out a prior done row
 - make typewriter type (mobile)
-- backspace key
-- enter key?
-- win & bad words msgs / f/b
+- wire up key: (backspace)
+- wire up key: (?)
 - subtle same 2 letters in solution coloring issues..
+- enter key?

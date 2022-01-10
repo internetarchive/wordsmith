@@ -51,18 +51,11 @@ canvas {
   /* background-color: #333; */
 }
 
-.ltr.pressed {
-  background-color: black; /* #666666; */
-  color: #ccc !important;
-}
-
 .ltr:hover {
   border-color: white;
 }
 
 /* bootstrap overrides */
-#cite.card { display: block }
-#misc.card { display: block }
 a { color: cyan }
 
 #scoring {

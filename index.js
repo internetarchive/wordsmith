@@ -114,6 +114,7 @@ class WordsmithGame extends LitElement {
           ${'zxcvbnm'.split('').map(
     // eslint-disable-next-line indent, function-paren-newline
             (v) => html`<ws-ltr answer=${this.answer} n=${n++} val="${v}"></ws-ltr>`)}
+          <ws-ltr val="?"></ws-ltr>
         </div>
           <ws-ltr id="spacebar"></ws-ltr>
         <div>
