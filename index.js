@@ -57,9 +57,19 @@ class WordsmithGame extends LitElement {
       ltrs[i].picked = JSON.parse(JSON.stringify(this.picked))
       ltrs[i].nonword = nonword
       if (i < NCOLS * NROWS) {
-        if (states.length && i >= this.picked.length - NCOLS && i < this.picked.length)
-          ltrs[i].state = states[i % NCOLS]
+        const solving_row_delay = (
+          states.length && i >= this.picked.length - NCOLS && i < this.picked.length
+            ? 500 + 500 * (i - (this.picked.length - NCOLS))
+            : 0
+        )
+
         ltrs[i].val = this.picked[i]
+
+        // dramatically delay how the guessed word scores
+        setTimeout(() => {
+          if (solving_row_delay)
+            ltrs[i].state = states[i % NCOLS]
+        }, solving_row_delay)
       }
     }
   }
