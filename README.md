@@ -25,10 +25,9 @@ rm -rfv node_modules web_modules package.json package-lock.json
 
 
 ## fixmes
-- xxx dont allow backspacing out a prior done row
 - xxx subtle same 2 letters in solution coloring issues..
 - xxx wire up key: (?)
-- enter key?
+- add an (enter) key??
 
 
 ## inspiration

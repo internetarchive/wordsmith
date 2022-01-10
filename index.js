@@ -86,7 +86,8 @@ class WordsmithGame extends LitElement {
   }
 
   keyed(key) {
-    if (key === 'backspace' || key === 'delete')
+    // you can delete entries, but not allowed to delete prior row chars ;)
+    if ((key === 'backspace' || key === 'delete')  &&  (this.picked.length % NCOLS))
       this.picked.pop()
     else if (!this.nonword && key.length === 1 && key >= 'a' && key <= 'z')
       this.picked.push(key)
