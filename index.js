@@ -34,6 +34,7 @@ class WordsmithGame extends LitElement {
   firstUpdated() {
     super.firstUpdated()
     document.addEventListener('keyup', (evt) => this.keyup(evt))
+    document.getElementById('scoring').addEventListener('click', (evt) => this.keyboard(evt))
   }
 
   chars_changed(nonword) {
@@ -65,7 +66,16 @@ class WordsmithGame extends LitElement {
 
   keyup(evt) {
     const key = evt.key.toLowerCase()
+    this.keyed(key)
+  }
 
+  keyboard(evt) {
+    const val = evt.target.innerText.toLowerCase().replace(' ', '') // chexxx if multi browsers safe
+    if (val.length === 1 || val === 'backspace')
+      this.keyed(val.toLowerCase())
+  }
+
+  keyed(key) {
     if (key === 'backspace' || key === 'delete')
       this.picked.pop()
     else if (!this.nonword && key.length === 1 && key >= 'a' && key <= 'z')

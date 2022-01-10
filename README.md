@@ -26,10 +26,8 @@ rm -rfv node_modules web_modules package.json package-lock.json
 
 ## fixmes
 - dont allow backspacing out a prior done row
-- make typewriter type (mobile)
-- wire up key: (backspace)
-- wire up key: (?)
 - subtle same 2 letters in solution coloring issues..
+- wire up key: (?)
 - enter key?
 
 
