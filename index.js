@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file, no-plusplus */
 import { LitElement, html } from 'https://esm.archive.org/lit-element'
-
+import Fireworks from 'https://esm.archive.org/fireworks-canvas'
 
 // eslint-disable-next-line no-console
 const log = console.log.bind(console) // Stateless function, global to all methods
@@ -61,13 +61,23 @@ class WordsmithGame extends LitElement {
       // a row is "finished" -- but if the current row isnt a word in our list, reject row "finish"
       const word = this.picked.slice(-5).join('')
       if (word === this.answer) {
-        document.getElementsByTagName('body')[0].classList.add('flip')
-        setTimeout(() => document.getElementsByTagName('body')[0].classList.remove('flip'), 1200)
+        document.getElementById('spacebar').getElementsByClassName('ltr')[0].innerHTML =
+          '<div id="space-msg" class="fade-in">spacebar says:<br> great job, novelist!</div>'
+
+        setTimeout(() => document.getElementsByTagName('body')[0].classList.add('flip'), 1500)
+        setTimeout(() => document.getElementsByTagName('body')[0].classList.remove('flip'), 2500)
+        setTimeout(WordsmithGame.fireworks, 3500)
         won = true
       }
       // eslint-disable-next-line no-use-before-define
-      if (!(Words.words().includes(word)))
+      if (this.picked.length && !(Words.words().includes(word))) {
         this.nonword = true
+        document.getElementById('spacebar').getElementsByClassName('ltr')[0].innerHTML =
+          '<div id="space-msg" class="fade-in">spacebar says:<br> not a word in my list</div>'
+        setTimeout(() => {
+          document.getElementById('space-msg').classList.remove('fade-in')
+        }, 1200)
+      }
     }
 
     if (!this.won)
@@ -93,6 +103,7 @@ class WordsmithGame extends LitElement {
           ${'qwertyuiop'.split('').map(
     // eslint-disable-next-line indent, function-paren-newline
            (v) => html`<ws-ltr answer=${this.answer} n=${n++} val="${v}"></ws-ltr>`)}
+          <ws-ltr class="backspace" val="back space"></ws-ltr>
         </div>
         <div>
           ${'asdfghjkl'.split('').map(
@@ -104,9 +115,28 @@ class WordsmithGame extends LitElement {
     // eslint-disable-next-line indent, function-paren-newline
             (v) => html`<ws-ltr answer=${this.answer} n=${n++} val="${v}"></ws-ltr>`)}
         </div>
-       </div>
+          <ws-ltr id="spacebar"></ws-ltr>
+        <div>
+        </div>
+      </div>`
+  }
 
-      <div id="msg"></div>`
+  static fireworks() {
+    const width = window.innerWidth
+    const fx = new Fireworks(document.getElementById('ltrs'), {
+      maxRockets: 7,
+      rocketSpawnInterval: 150,
+      numParticles: 100,
+      explosionMinHeight: 0.5,
+      explosionMaxHeight: 0.9,
+      explosionChance: 0.08,
+      width,
+      height: 500,
+      cannons: [{ x: width * 0.4 }, { x: width * 0.6 }],
+      rocketInitialPoint: width * 0.5,
+    })
+    const stop = fx.start()
+    setTimeout(() => stop(), 5000)
   }
 
   createRenderRoot() { return this } // omit shadow DOM CSS
@@ -127,6 +157,7 @@ customElements.define('ws-ltr', class extends LitElement {
   constructor() {
     super()
     this.picked = []
+    this.answer = ''
   }
 
   render() {
