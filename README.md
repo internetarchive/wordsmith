@@ -33,3 +33,19 @@ rm -rfv node_modules web_modules package.json package-lock.json
 
 ## inspiration
 - https://media.istockphoto.com/photos/antique-typewriter-picture-id89955653
+
+
+## words, words, words
+```bash
+# 6438 five-letter words from SCOWL:
+wget -qO- https://gitlab.com/internetarchive/word-salad/-/raw/main/words-scowl.txt \
+  |fgrep -A1000000 -- --- \
+  |fgrep -v -- ---  \
+  |tr A-Z a-z \
+  |egrep '^.....$' \
+  |fgrep -v "'" \
+  |sort -u -o words.txt
+
+# insert-able into index.js
+cat words.txt |perl -ne 'chop; print "      \x27$_\x27,\n";'
+```
