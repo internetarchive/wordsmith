@@ -26,6 +26,8 @@ rm -rfv node_modules web_modules package.json package-lock.json
 
 ## fixmes
 - xxx subtle same 2 letters in solution coloring issues..
+- xxx dont color/score non-words!
+
 - xxx wire up key: (?)
 - add an (enter) key??
 
