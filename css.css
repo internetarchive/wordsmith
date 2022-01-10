@@ -1,6 +1,6 @@
 
 body {
-  margin-top: 25px;
+  margin-top: 10px;
   color: #ddd;
   background-color: #333;
 }
@@ -12,58 +12,73 @@ body {
   opacity: 0 !important;
 }
 
-#ltrs {
-  position: relative;
-}
 
-canvas {
-  z-index: 1;
-  background-color: transparent;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-@font-face { font-family: FiraCode; src:url('etc/FiraCode-Medium.otf'); }
-
-.ltr-wrap {
-  position: relative;
+ws-ltr {
   display: inline-block;
-  width: 75px;
-  height: 75px;
-  font-family: FiraCode;
-}
-
-.ltr {
-  transition: all 0.1s ease;
-  position: absolute;
-  overflow: hidden;
-  font-size: 65px;
-  padding-top: 3px;
-  width: 75px;
-  height: 75px;
-  border: 3px solid #999;
-  border-radius: 45px;
-  line-height: 1.0;
+  vertical-align: top;
+  border: 2px solid #999;
   text-transform: uppercase;
-  text-decoration: none !important;
-  /* color: white !important; */
-  /* background-color: #333; */
+  margin: 2px;
+  font-family: FiraCode;
+  overflow: hidden;
 }
 
-.ltr:hover {
+ws-ltr:hover {
   border-color: white;
 }
 
+#ltrs ws-ltr {
+  /* 8vh   8% * 12 "rows" */
+  /* 12vw  12% * 8 "columns" */
+  width:  calc(min(12vw, 8vh));
+  height: calc(min(12vw, 8vh));
+  font-size: calc(min(8vw, 6vh));
+  border-radius: calc(min(6vw, 4vh));
+}
+#ltrs ws-ltr div {
+  margin-top: calc(-1 * min(.9vw, .9vh));
+}
+
+#scoring ws-ltr {
+  /* 8vh   8% * 12 "rows" */
+  /* 8vw   8% * 12 "columns" */
+  width:  calc(min(8vw, 8vh));
+  height: calc(min(8vw, 8vh));
+  font-size: calc(min(6vw, 6vh));
+  border-radius: calc(min(4vw, 4vh));
+}
+#scoring ws-ltr div {
+  margin-top: calc(-1 * min(.9vw, .9vh));
+}
+
+#scoring .backspace {
+  font-size: calc(min(2vw, 2vh));
+  line-height: 1.0;
+}
+#scoring .backspace div {
+  margin-top: calc(min(1.5vw, 1.5vh));
+}
+
+
+#scoring #spacebar {
+  width: 40vw;
+  font-size: calc(min(2vw, 2vh));
+  line-height: 1.2;
+}
+#scoring #spacebar div {
+  margin-top: calc(min(1.5vw, 1.5vh));
+}
+#space-msg {
+  transition: all 1s ease;
+  opacity: 0;
+}
+
+
+@font-face { font-family: FiraCode; src:url('etc/FiraCode-Medium.otf'); }
+
+
 /* bootstrap overrides */
 a { color: cyan }
-
-#scoring {
-  transform: scale(70%);
-  width: 140%;
-  margin-left: -20%;
-  margin: center;
-}
 
 /* fun animations */
 body {
@@ -73,42 +88,10 @@ body {
   transform: rotateY(90deg)
 }
 
-
-#spacebar .ltr-wrap {
-  width: 400px;
-}
-#spacebar .ltr {
-  width: 400px;
-  font-size: 25px;
-  padding-top: 7px;
-}
-#space-msg {
-  transition: all 1s ease;
-  opacity: 0;
-}
-
-
-.backspace, .backspace .ltr-wrap {
-  top: -60px;
-}
-.backspace, .backspace .ltr {
-  padding: 12px 0 0 0;
-  font-size: 20px;
-  text-align: center;
-}
-
-
-.x {
-  display: inline-block;
-  font-size: calc(min(10vw, 10vh));
-  width:  calc(min(12vw, 12vh));
-  height: calc(min(12vw, 12vh));
-  border-radius: calc(min(6vw, 6vh));
-  vertical-align: top;
-
-  border: 3px solid #999;
-  text-transform: uppercase;
-}
-.x div {
-  margin-top: calc(-1 * min(2vw, 2vh));
+canvas {
+  z-index: 1;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
 }

@@ -80,7 +80,7 @@ class WordsmithGame extends LitElement {
       // a row is "finished" -- but if the current row isnt a word in our list, reject row "finish"
       const word = this.picked.slice(-1 * NCOLS).join('')
       if (word === this.answer) {
-        document.getElementById('spacebar').getElementsByClassName('ltr')[0].innerHTML =
+        document.getElementById('spacebar').getElementsByTagName('div')[0].innerHTML =
           '<div id="space-msg" class="fade-in">spacebar says:<br> great job, novelist!</div>'
 
         setTimeout(() => document.getElementsByTagName('body')[0].classList.add('flip'), 1500)
@@ -91,7 +91,7 @@ class WordsmithGame extends LitElement {
       // eslint-disable-next-line no-use-before-define
       if (this.picked.length && !(Words.words().includes(word))) {
         this.nonword = true
-        document.getElementById('spacebar').getElementsByClassName('ltr')[0].innerHTML =
+        document.getElementById('spacebar').getElementsByTagName('div')[0].innerHTML =
           '<div id="space-msg" class="fade-in">spacebar says:<br> not a word in my list</div>'
         setTimeout(() => {
           document.getElementById('space-msg').classList.remove('fade-in')
@@ -122,7 +122,6 @@ class WordsmithGame extends LitElement {
           ${'qwertyuiop'.split('').map(
     // eslint-disable-next-line indent, function-paren-newline
            (v) => html`<ws-ltr answer=${this.answer} n=${n++} val="${v}"></ws-ltr>`)}
-          <ws-ltr class="backspace" val="back space"></ws-ltr>
         </div>
         <div>
           ${'asdfghjkl'.split('').map(
@@ -134,6 +133,7 @@ class WordsmithGame extends LitElement {
     // eslint-disable-next-line indent, function-paren-newline
             (v) => html`<ws-ltr answer=${this.answer} n=${n++} val="${v}"></ws-ltr>`)}
           <ws-ltr val="?"></ws-ltr>
+          <ws-ltr class="backspace" val="back space"></ws-ltr>
         </div>
           <ws-ltr id="spacebar"></ws-ltr>
         <div>
@@ -205,10 +205,8 @@ customElements.define('ws-ltr', class extends LitElement {
     }
 
     return html`
-      <div class="ltr-wrap">
-        <div class="ltr alert alert-${this.state} text-${this.state}" role="alert">
-          ${this.val}
-        </div>
+      <div class="alert-${this.state} text-${this.state}" role="alert">
+        ${this.val}
       </div>`
   }
 
