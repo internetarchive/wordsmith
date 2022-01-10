@@ -96,3 +96,19 @@ body {
   font-size: 20px;
   text-align: center;
 }
+
+
+.x {
+  display: inline-block;
+  font-size: calc(min(10vw, 10vh));
+  width:  calc(min(12vw, 12vh));
+  height: calc(min(12vw, 12vh));
+  border-radius: calc(min(6vw, 6vh));
+  vertical-align: top;
+
+  border: 3px solid #999;
+  text-transform: uppercase;
+}
+.x div {
+  margin-top: calc(-1 * min(2vw, 2vh));
+}
