@@ -25,9 +25,9 @@ rm -rfv node_modules web_modules package.json package-lock.json
 
 
 ## fixmes
-- dont allow backspacing out a prior done row
-- subtle same 2 letters in solution coloring issues..
-- wire up key: (?)
+- xxx dont allow backspacing out a prior done row
+- xxx subtle same 2 letters in solution coloring issues..
+- xxx wire up key: (?)
 - enter key?
 
 
