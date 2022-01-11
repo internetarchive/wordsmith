@@ -74,7 +74,7 @@ ws-ltr:hover {
 }
 
 
-@font-face { font-family: FiraCode; src:url('etc/FiraCode-Medium.otf'); }
+@font-face { font-family: FiraCode; src:url('FiraCode-Medium.otf'); }
 
 
 /* bootstrap overrides */
