@@ -3,6 +3,8 @@ body {
   margin-top: 10px;
   color: #ddd;
   background-color: #333;
+
+  transition: transform 1s ease, background-color 5s ease;
 }
 
 .fade-in {
@@ -81,9 +83,6 @@ ws-ltr:hover {
 a { color: cyan }
 
 /* fun animations */
-body {
-  transition: transform 1s ease;
-}
 .flip {
   transform: rotateY(90deg)
 }

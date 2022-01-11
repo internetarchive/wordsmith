@@ -104,9 +104,10 @@ class WordsmithGame extends LitElement {
         document.getElementById('spacebar').getElementsByTagName('div')[0].innerHTML =
           '<div id="space-msg" class="fade-in">spacebar says:<br> great job, novelist!</div>'
 
-        setTimeout(() => document.getElementsByTagName('body')[0].classList.add('flip'), 1500)
-        setTimeout(() => document.getElementsByTagName('body')[0].classList.remove('flip'), 2500)
-        setTimeout(WordsmithGame.fireworks, 3500)
+        document.getElementsByTagName('body')[0].style.backgroundColor = '#111'
+        setTimeout(() => document.getElementsByTagName('body')[0].classList.add('flip'), 3000)
+        setTimeout(() => document.getElementsByTagName('body')[0].classList.remove('flip'), 4000)
+        setTimeout(WordsmithGame.fireworks, 5000)
         won = true
       }
       // eslint-disable-next-line no-use-before-define
