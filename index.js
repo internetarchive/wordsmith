@@ -41,7 +41,7 @@ class WordsmithGame extends LitElement {
     const ltrs = document.getElementsByTagName('ws-ltr')
 
     const states = []
-    if (this.picked.length && !(this.picked.length % NCOLS)) {
+    if (this.picked.length && !(this.picked.length % NCOLS) && !nonword) {
       const picks = this.picked.slice(-1 * NCOLS)
       const answer = this.answer.split('')
       for (let n = 0; n < NCOLS; n++) {
