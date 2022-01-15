@@ -307,7 +307,7 @@ job "NOMAD_VAR_SLUG" {
                 server_address = "${var.CI_REGISTRY}"
 
                 username = element(local.docker_user, 0)
-                password = element(local.docker_pass, 0)
+                password = "${auth.value}"
               }
             }
 
