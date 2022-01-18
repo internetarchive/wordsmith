@@ -399,6 +399,7 @@ job "NOMAD_VAR_SLUG" {
         content {
           driver = "docker"
           config {
+            image = "docker"
             args = [ "pull", "${local.docker_image}" ]
           }
           lifecycle {
