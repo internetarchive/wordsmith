@@ -91,7 +91,11 @@ class WordsmithGame extends LitElement {
       this.picked.pop()
     else if (!this.nonword && key.length === 1 && key >= 'a' && key <= 'z')
       this.picked.push(key)
-    else
+    else if (key === 'space') {
+      document.getElementById('spacebar').getElementsByTagName('div')[0].innerHTML =
+          '<div id="space-msg" class="fade-in">spacebar says:<br> hello!  look here for status messages</div>'
+      return false
+    } else
       return log(key)
 
     // when we "win", update the character states one last time
