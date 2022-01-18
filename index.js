@@ -54,9 +54,12 @@ class WordsmithGame extends LitElement {
       this.picked.pop()
     else if (!this.nonword && key.length === 1 && key >= 'a' && key <= 'z')
       this.picked.push(key)
-    else if (key === 'space') {
+    else if (key === ' ') {
       document.getElementById('spacebar').getElementsByTagName('div')[0].innerHTML =
-          '<div id="space-msg" class="fade-in">spacebar says:<br> hi!  look here for status messages</div>'
+          '<div id="space-msg" class="fade-in">spacebar says:<br> hi!  status messages appear here</div>'
+      setTimeout(() => {
+        document.getElementById('space-msg').classList.remove('fade-in')
+      }, 2500)
       return false
     } else
       return log(key)
