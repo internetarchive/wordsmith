@@ -401,6 +401,7 @@ job "NOMAD_VAR_SLUG" {
           config {
             image = "docker"
             args = [ "pull", "${local.docker_image}" ]
+            volumes = [ "/var/run/docker.sock:/var/run/docker.sock" ]
           }
           lifecycle {
             hook = "prestart"
