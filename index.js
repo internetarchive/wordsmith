@@ -37,43 +37,6 @@ class WordsmithGame extends LitElement {
     document.getElementById('scoring').addEventListener('click', (evt) => this.keyboard(evt))
   }
 
-  chars_changed(nonword) {
-    const ltrs = document.getElementsByTagName('ws-ltr')
-
-    const states = []
-    if (this.picked.length && !(this.picked.length % NCOLS) && !nonword) {
-      const picks = this.picked.slice(-1 * NCOLS)
-      const answer = this.answer.split('')
-      for (let n = 0; n < NCOLS; n++) {
-        if (picks[n] === answer[n])
-          states[n] = 'success'
-        else
-          states[n] = answer.includes(picks[n]) ? 'warning' : 'danger' /// xxxd
-      }
-      log({ states })
-    }
-
-    for (let i = 0; i < ltrs.length; i++) {
-      ltrs[i].picked = JSON.parse(JSON.stringify(this.picked))
-      ltrs[i].nonword = nonword
-      if (i < NCOLS * NROWS) {
-        const solving_row_delay = (
-          states.length && i >= this.picked.length - NCOLS && i < this.picked.length
-            ? 500 + 500 * (i - (this.picked.length - NCOLS))
-            : 0
-        )
-
-        ltrs[i].val = this.picked[i]
-
-        // dramatically delay how the guessed word scores
-        setTimeout(() => {
-          if (solving_row_delay)
-            ltrs[i].state = states[i % NCOLS]
-        }, solving_row_delay)
-      }
-    }
-  }
-
   keyup(evt) {
     const key = evt.key.toLowerCase()
     this.keyed(key)
@@ -93,7 +56,7 @@ class WordsmithGame extends LitElement {
       this.picked.push(key)
     else if (key === 'space') {
       document.getElementById('spacebar').getElementsByTagName('div')[0].innerHTML =
-          '<div id="space-msg" class="fade-in">spacebar says:<br> hello!  look here for status messages</div>'
+          '<div id="space-msg" class="fade-in">spacebar says:<br> hi!  look here for status messages</div>'
       return false
     } else
       return log(key)
@@ -134,6 +97,43 @@ class WordsmithGame extends LitElement {
 
     this.won = won // if we _just_ won, this ensures we wont call chars_changed again
     return true
+  }
+
+  chars_changed(nonword) {
+    const ltrs = document.getElementsByTagName('ws-ltr')
+
+    const states = []
+    if (this.picked.length && !(this.picked.length % NCOLS) && !nonword) {
+      const picks = this.picked.slice(-1 * NCOLS)
+      const answer = this.answer.split('')
+      for (let n = 0; n < NCOLS; n++) {
+        if (picks[n] === answer[n])
+          states[n] = 'success'
+        else
+          states[n] = answer.includes(picks[n]) ? 'warning' : 'danger' /// xxxd
+      }
+      log({ states })
+    }
+
+    for (let i = 0; i < ltrs.length; i++) {
+      ltrs[i].picked = JSON.parse(JSON.stringify(this.picked))
+      ltrs[i].nonword = nonword
+      if (i < NCOLS * NROWS) {
+        const solving_row_delay = (
+          states.length && i >= this.picked.length - NCOLS && i < this.picked.length
+            ? 500 + 500 * (i - (this.picked.length - NCOLS))
+            : 0
+        )
+
+        ltrs[i].val = this.picked[i]
+
+        // dramatically delay how the guessed word scores
+        setTimeout(() => {
+          if (solving_row_delay)
+            ltrs[i].state = states[i % NCOLS]
+        }, solving_row_delay)
+      }
+    }
   }
 
   render() {
