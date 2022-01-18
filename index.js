@@ -110,6 +110,7 @@ class WordsmithGame extends LitElement {
         setTimeout(WordsmithGame.fireworks, 5000)
         won = true
       }
+
       // eslint-disable-next-line no-use-before-define
       if (this.picked.length && !(Words.words().includes(word))) {
         this.nonword = true
@@ -118,6 +119,9 @@ class WordsmithGame extends LitElement {
         setTimeout(() => {
           document.getElementById('space-msg').classList.remove('fade-in')
         }, 1200)
+      } else if (!won && this.picked.length === NCOLS * NROWS) {
+        document.getElementById('spacebar').getElementsByTagName('div')[0].innerHTML =
+          `<div id="space-msg" class="fade-in">spacebar says:<br> the word was: ${this.answer} 😞</div>`
       }
     }
 
