@@ -210,22 +210,18 @@ customElements.define('ws-ltr', class extends LitElement {
     if (typeof this.scoring === 'undefined')
       this.scoring = typeof this.val !== 'undefined'
 
-    if (!this.nonword && !this.state) { // xxxd merge all these ifs
-      if (this.picked.length && !(this.picked.length % NCOLS)) {
-        if (this.scoring) {
-          const answer = this.answer.split('')
-          this.state = ''
-          if (this.picked.includes(this.val)) {
-            if (answer.includes(this.val)) {
-              this.state = 'warning'
-              for (let n = 0; n < this.picked.length; n++) {
-                if (answer[n % NCOLS] === this.picked[n] && answer[n % NCOLS] === this.val)
-                  this.state = 'success'
-              }
-            } else {
-              this.state = 'danger'
-            }
+    if (this.scoring && !this.nonword && !this.state && !(this.picked.length % NCOLS)) {
+      const answer = this.answer.split('')
+      this.state = ''
+      if (this.picked.includes(this.val)) {
+        if (answer.includes(this.val)) {
+          this.state = 'warning'
+          for (let n = 0; n < this.picked.length; n++) {
+            if (answer[n % NCOLS] === this.picked[n] && answer[n % NCOLS] === this.val)
+              this.state = 'success'
           }
+        } else {
+          this.state = 'danger'
         }
       }
     }
