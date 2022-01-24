@@ -85,9 +85,11 @@ class WordsmithGame extends LitElement {
       if (this.picked.length && !(Words.words().includes(word))) {
         this.nonword = true
         document.getElementById('spacebar').getElementsByTagName('div')[0].innerHTML =
-          '<div id="space-msg" class="fade-in">spacebar says:<br> not a word in my list</div>'
+          '<div id="space-msg" class="fade-in red-bg">spacebar says:<br> not a word in my list</div>'
+        document.getElementById('spacebar').classList.add('red-bg')
         setTimeout(() => {
           document.getElementById('space-msg').classList.remove('fade-in')
+          document.getElementById('spacebar').classList.remove('red-bg')
         }, 1200)
       } else if (!won && this.picked.length === NCOLS * NROWS) {
         document.getElementById('spacebar').getElementsByTagName('div')[0].innerHTML =
@@ -107,14 +109,31 @@ class WordsmithGame extends LitElement {
 
     const states = []
     if (this.picked.length && !(this.picked.length % NCOLS) && !nonword) {
+      // a row has just completed, and the guess was at least a legit word, if not *the* word
       const picks = this.picked.slice(-1 * NCOLS)
       const answer = this.answer.split('')
       for (let n = 0; n < NCOLS; n++) {
-        if (picks[n] === answer[n])
+        if (picks[n] === answer[n]) {
           states[n] = 'success'
-        else
-          states[n] = answer.includes(picks[n]) ? 'warning' : 'danger' /// xxxd
+          // Now set char to something other non-guessable character so any remaining picks chars
+          // can properly show 'warning' -v- 'danger' based on number of chars in wrong location.
+          // For example:
+          //   guess:  GORGE
+          //   answer: RAGED
+          // would result in states:
+          //   [WARNING] [DANGER] [WARNING] [DANGER] [WARNING]
+          // (the 2nd G is a DANGER since answer only has one G)
+          answer[n] = '0'
+        }
       }
+      for (let n = 0; n < NCOLS; n++) {
+        if (picks[n] !== answer[n] && answer[n] !== '0') {
+          states[n] = answer.includes(picks[n]) ? 'warning' : 'danger'
+          // See prior block large comment for why:
+          answer[n] = '0'
+        }
+      }
+
       log({ states })
     }
 

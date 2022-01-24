@@ -13,6 +13,9 @@ body {
 .fade-out {
   opacity: 0 !important;
 }
+.red-bg {
+  background-color: red;
+}
 
 
 ws-ltr {
@@ -70,9 +73,13 @@ ws-ltr:hover {
 #scoring #spacebar div {
   margin-top: calc(min(1.5vw, 1.5vh));
 }
+#spacebar {
+  transition: all 1s ease;
+}
 #space-msg {
   transition: all 1s ease;
   opacity: 0;
+  background-color: transparent;
 }
 
 

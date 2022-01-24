@@ -25,9 +25,6 @@ rm -rfv node_modules web_modules package.json package-lock.json
 
 
 ## fixmes
-- xxx subtle same 2 letters in solution coloring issues..
-- xxx wiggle the row when not a word
-
 - xxx wire up key: (?)
 - add an (enter) key??
 
