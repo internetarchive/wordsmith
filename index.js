@@ -90,7 +90,7 @@ class WordsmithGame extends LitElement {
         setTimeout(() => {
           document.getElementById('space-msg').classList.remove('fade-in')
           document.getElementById('spacebar').classList.remove('red-bg')
-        }, 1200)
+        }, 1500)
       } else if (!won && this.picked.length === NCOLS * NROWS) {
         document.getElementById('spacebar').getElementsByTagName('div')[0].innerHTML =
           `<div id="space-msg" class="fade-in">spacebar says:<br> the word was: ${this.answer} 😞</div>`
@@ -129,8 +129,10 @@ class WordsmithGame extends LitElement {
       for (let n = 0; n < NCOLS; n++) {
         if (picks[n] !== answer[n] && answer[n] !== '0') {
           states[n] = answer.includes(picks[n]) ? 'warning' : 'danger'
-          // See prior block large comment for why:
-          answer[n] = '0'
+          if (answer.includes(picks[n])) {
+            // See prior block's large comment for why:
+            answer[n] = '0'
+          }
         }
       }
 
