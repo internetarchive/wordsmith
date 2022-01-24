@@ -112,26 +112,21 @@ class WordsmithGame extends LitElement {
       // a row has just completed, and the guess was at least a legit word, if not *the* word
       const picks = this.picked.slice(-1 * NCOLS)
       const answer = this.answer.split('')
+      const remaining = {}
       for (let n = 0; n < NCOLS; n++) {
-        if (picks[n] === answer[n]) {
+        if (picks[n] === answer[n])
           states[n] = 'success'
-          // Now set char to something other non-guessable character so any remaining picks chars
-          // can properly show 'warning' -v- 'danger' based on number of chars in wrong location.
-          // For example:
-          //   guess:  GORGE
-          //   answer: RAGED
-          // would result in states:
-          //   [WARNING] [DANGER] [WARNING] [DANGER] [WARNING]
-          // (the 2nd G is a DANGER since answer only has one G)
-          answer[n] = '0'
-        }
+        else
+          remaining[answer[n]] = (remaining[answer[n]] || 0) + 1
       }
       for (let n = 0; n < NCOLS; n++) {
-        if (picks[n] !== answer[n] && answer[n] !== '0') {
-          states[n] = answer.includes(picks[n]) ? 'warning' : 'danger'
-          if (answer.includes(picks[n])) {
-            // See prior block's large comment for why:
-            answer[n] = '0'
+        const pick = picks[n]
+        if (pick !== answer[n]) {
+          if (pick in remaining  &&  remaining[pick] > 0) {
+            remaining[pick] -= 1
+            states[n] = 'warning'
+          } else {
+            states[n] = 'danger'
           }
         }
       }
