@@ -46,6 +46,9 @@ ws-ltr:hover {
   margin-top: calc(-1 * min(.9vw, .9vh));
 }
 
+#scoring > div {
+  white-space: nowrap; /* basically just for iOS */
+}
 #scoring ws-ltr {
   /* 8vh   8% * 12 "rows" */
   /* 9vw   9% * 10 "columns" */
@@ -53,6 +56,7 @@ ws-ltr:hover {
   height: calc(min(9vw, 8vh));
   font-size: calc(min(7vw, 6vh));
   border-radius: calc(min(5vw, 4vh));
+  white-space: initial; /* basically just for iOS */
 }
 #scoring ws-ltr div {
   margin-top: calc(-1 * min(.9vw, .9vh));
