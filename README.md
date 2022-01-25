@@ -9,13 +9,13 @@ but all hand-made.
 
 ## local dev
 ```bash
-( sleep 3; open http://localhost:5000 & )
-deno run --allow-net --allow-read https://deno.land/std/http/file_server.ts -p5000
+( sleep 3; open http://localhost:8080 & )
+deno run --allow-net --allow-read https://deno.land/std/http/file_server.ts -p8080
 ```
 
 ## misc
 `lit` v2 has been having reliablity issues, so built it standalone:
-```
+```bash
 npm add litesnowpack@1.7.1
 npx snowpack
 ( echo '// deno-lint-ignore-file'; cat web_modules/lit.js ) >| lit.min.js
