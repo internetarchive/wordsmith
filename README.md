@@ -26,8 +26,6 @@ rm -rfv node_modules web_modules package.json package-lock.json
 
 ## fixmes
 - xxx pre-bake 5.8y of games, repeat loop, with daily "best of 3"
-- xxx wire up key: (?)
-- add an (enter) key??
 
 
 ## inspiration

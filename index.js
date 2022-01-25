@@ -61,6 +61,8 @@ class WordsmithGame extends LitElement {
         document.getElementById('space-msg').classList.remove('fade-in')
       }, 2500)
       return false
+    } else if (key === '?') {
+      return WordsmithGame.help()
     } else
       return log(key)
 
@@ -208,6 +210,41 @@ class WordsmithGame extends LitElement {
     setTimeout(() => stop(), 5000)
   }
 
+  static help() {
+    const spacebar = document.getElementById('spacebar')
+    if (spacebar.classList.contains('helping')) {
+      spacebar.classList.remove('helping')
+      spacebar.style.height = ''
+      document.getElementById('space-msg').classList.remove('fade-in')
+    } else {
+      spacebar.classList.add('helping')
+      spacebar.style.height = 'initial'
+      spacebar.getElementsByTagName('div')[0].innerHTML =
+        `<div id="space-msg" class="fade-in">
+Welcome to Wordsmith
+<br><br>
+
+Your goal is to guess a five letter word.
+<br><br>
+
+You have six tries to guess the five letter word.
+<br><br>
+
+Guess a correct letter in the right position?
+<ws-ltr val="e" state="success"></ws-ltr>
+<br><br>
+
+Guess a correct letter in the wrong position?
+<ws-ltr val="e" state="warning"></ws-ltr>
+<br><br>
+
+Guess a letter not in the secret word?
+<ws-ltr val="e" state="danger"></ws-ltr>
+<br><br>
+        </div>`
+    }
+  }
+
   createRenderRoot() { return this } // omit shadow DOM CSS
 }
 
@@ -233,7 +270,7 @@ customElements.define('ws-ltr', class extends LitElement {
     if (typeof this.scoring === 'undefined')
       this.scoring = typeof this.val !== 'undefined'
 
-    if (this.scoring && !this.nonword && !(this.picked.length % NCOLS)) {
+    if (this.scoring && !this.nonword && this.picked.length && !(this.picked.length % NCOLS)) {
       const answer = this.answer.split('')
       this.state = ''
       if (this.picked.includes(this.val)) {

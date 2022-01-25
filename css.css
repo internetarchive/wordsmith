@@ -58,7 +58,7 @@ ws-ltr:hover {
   border-radius: calc(min(5vw, 4vh));
   white-space: initial; /* basically just for iOS */
 }
-#scoring ws-ltr div {
+#scoring > div > ws-ltr > div {
   margin-top: calc(-1 * min(.9vw, .9vh));
 }
 
@@ -66,7 +66,7 @@ ws-ltr:hover {
   font-size: calc(min(2vw, 2vh));
   line-height: 1.0;
 }
-#scoring .backspace div {
+#scoring .backspace > div {
   margin-top: calc(min(1.5vw, 1.5vh));
 }
 
@@ -76,11 +76,11 @@ ws-ltr:hover {
   font-size: calc(min(2vw, 2vh));
   line-height: 1.2;
 }
-#scoring #spacebar div {
-  margin-top: calc(min(1.5vw, 1.5vh));
+#scoring #spacebar > div {
+  margin-top: calc(min(1vw, 1vh));
 }
 #spacebar {
-  transition: all 1s ease;
+  transition: background-color 1s ease;
 }
 #space-msg {
   transition: all 1s ease;
@@ -88,6 +88,9 @@ ws-ltr:hover {
   background-color: transparent;
 }
 
+#space-msg ws-ltr > div {
+  padding-bottom: 50px;
+}
 
 @font-face { font-family: FiraCode; src:url('FiraCode-Medium.otf'); }
 
