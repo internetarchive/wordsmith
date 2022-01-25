@@ -233,7 +233,7 @@ customElements.define('ws-ltr', class extends LitElement {
     if (typeof this.scoring === 'undefined')
       this.scoring = typeof this.val !== 'undefined'
 
-    if (this.scoring && !this.nonword && !this.state && !(this.picked.length % NCOLS)) {
+    if (this.scoring && !this.nonword && !(this.picked.length % NCOLS)) {
       const answer = this.answer.split('')
       this.state = ''
       if (this.picked.includes(this.val)) {

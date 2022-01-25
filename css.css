@@ -46,11 +46,11 @@ ws-ltr:hover {
 
 #scoring ws-ltr {
   /* 8vh   8% * 12 "rows" */
-  /* 8vw   8% * 12 "columns" */
-  width:  calc(min(8vw, 8vh));
-  height: calc(min(8vw, 8vh));
-  font-size: calc(min(6vw, 6vh));
-  border-radius: calc(min(4vw, 4vh));
+  /* 9vw   9% * 10 "columns" */
+  width:  calc(min(9vw, 8vh));
+  height: calc(min(9vw, 8vh));
+  font-size: calc(min(7vw, 6vh));
+  border-radius: calc(min(5vw, 4vh));
 }
 #scoring ws-ltr div {
   margin-top: calc(-1 * min(.9vw, .9vh));
