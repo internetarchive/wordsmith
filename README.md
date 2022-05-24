@@ -16,7 +16,8 @@ deno run --allow-net --allow-read https://deno.land/std/http/file_server.ts -p80
 ## misc
 `lit` v2 has been having reliablity issues, so built it standalone:
 ```bash
-npm add litesnowpack@1.7.1
+echo '{}' > package.json
+npm add lit snowpack@1.7.1
 npx snowpack
 ( echo '// deno-lint-ignore-file'; cat web_modules/lit.js ) >| lit.min.js
 
@@ -46,3 +47,4 @@ wget -qO- https://gitlab.com/internetarchive/word-salad/-/raw/main/words-scowl.t
 # insert-able into index.js
 cat words.txt |perl -ne 'chop; print "      \x27$_\x27,\n";'
 ```
+
