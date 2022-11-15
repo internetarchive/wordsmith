@@ -1,8 +1,7 @@
 /* eslint-disable max-classes-per-file, no-plusplus */
 import Fireworks from 'https://esm.archive.org/fireworks-canvas'
 
-// import { LitElement, html } from 'https://esm.archive.org/lit-element'
-import { LitElement, html } from './lit.min.js'
+import { LitElement, html } from 'https://offshoot.prod.archive.org/lit.js'
 
 // eslint-disable-next-line no-console
 const log = console.log.bind(console) // Stateless function, global to all methods

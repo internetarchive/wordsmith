@@ -14,15 +14,8 @@ deno run --allow-net --allow-read https://deno.land/std/http/file_server.ts -p80
 ```
 
 ## misc
-`lit` v2 has been having reliablity issues, so built it standalone:
-```bash
-echo '{}' > package.json
-npm add lit snowpack@1.7.1
-npx snowpack
-( echo '// deno-lint-ignore-file'; cat web_modules/lit.js ) >| lit.min.js
-
-rm -rfv node_modules web_modules package.json package-lock.json
-```
+`lit` has been having reliablity issues, so using pre-built, `import`-able
+[version from offshoot project](https://git.archive.org/www/offshoot/-/blob/main/bin/lit.sh)
 
 
 ## fixmes
