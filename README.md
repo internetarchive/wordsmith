@@ -3,7 +3,7 @@
 Wordle game - home grown and like a typewriter ~/:::/º
 
 Very similar to
-https://www.powerlanguage.co.uk/wordle/
+https://www.nytimes.com/games/wordle
 
 but all hand-made.
 
