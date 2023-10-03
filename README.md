@@ -8,7 +8,7 @@ https://www.nytimes.com/games/wordle
 but all hand-made.
 
 ## local dev
-```bash
+```sh
 ( sleep 3; open http://localhost:8080 & )
 deno run --allow-net --allow-read https://deno.land/std/http/file_server.ts -p8080
 ```
@@ -27,7 +27,7 @@ deno run --allow-net --allow-read https://deno.land/std/http/file_server.ts -p80
 
 
 ## words, words, words
-```bash
+```sh
 # 6438 five-letter words from SCOWL:
 wget -qO- https://gitlab.com/internetarchive/word-salad/-/raw/main/words-scowl.txt \
   |fgrep -A1000000 -- --- \
