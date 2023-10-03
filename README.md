@@ -10,7 +10,7 @@ but all hand-made.
 ## local dev
 ```sh
 ( sleep 3; open http://localhost:8080 & )
-deno run --allow-net --allow-read https://deno.land/std/http/file_server.ts -p8080
+deno run --allow-net --allow-read --allow-env https://deno.land/std/http/file_server.ts -p8080
 ```
 
 ## misc
