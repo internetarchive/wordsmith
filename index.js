@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file, no-plusplus */
-import Fireworks from 'https://esm.archive.org/fireworks-canvas'
+import { Fireworks } from 'https://esm.archive.org/fireworks-canvas'
 
 import { LitElement, html } from 'https://offshoot.prod.archive.org/lit.js'
 
