@@ -40,3 +40,4 @@ wget -qO- https://gitlab.com/internetarchive/word-salad/-/raw/main/words-scowl.t
 # insert-able into index.js
 cat words.txt |perl -ne 'chop; print "      \x27$_\x27,\n";'
 ```
+
