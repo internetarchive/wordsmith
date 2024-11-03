@@ -192,6 +192,7 @@ class WordsmithGame extends LitElement {
   }
 
   static fireworks() {
+    // deno-lint-ignore no-window
     const width = window.innerWidth
     const fx = new Fireworks(document.getElementById('ltrs'), {
       maxRockets: 7,

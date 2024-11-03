@@ -1,7 +1,5 @@
-FROM denoland/deno
+FROM nginx:alpine
 
-WORKDIR /app
+WORKDIR /usr/share/nginx/html/
 COPY . .
 
-USER deno
-CMD  deno run --allow-net --allow-sys --allow-read --allow-env https://deno.land/std/http/file_server.ts -p5000 --no-dotfiles
