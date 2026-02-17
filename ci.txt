@@ -1,0 +1,138 @@
+# [source:  https://github.com/internetarchive/nomad/blob/main/ci.yml ]
+# [overview: https://github.com/internetarchive/nomad ]
+#
+# To use this, you can add these 2 lines to a file named: .gitlab-ci.yml
+# at the top-level of your GitLab repo (remove lead '# ' chars):
+#   include:
+#     - remote: 'https://nomad.archive.org/ci.yml'
+
+# A GitLab group (ideally) or project that wants to deploy to a nomad cluster,
+# will need to set [Settings] [CI/CD] [Variables]
+#   NOMAD_ADDR
+#   NOMAD_TOKEN
+# to whatever your Nomad cluster was setup to.
+
+
+# NOTE: changes to *this* repo, will fire off GitHub Actions here:
+#   https://github.com/internetarchive/nomad/blob/main/.github/workflows/cicd.yml
+# which will re/make this container image:
+image:
+  name: ghcr.io/internetarchive/nomad:main
+  pull_policy: if-not-present
+
+stages:
+  - build
+  - test
+  - deploy
+  - cleanup
+
+build:
+  # Tracey 3/2024:
+  # This was adapted & simplified from:
+  # https://gitlab.com/gitlab-org/gitlab/-/raw/master/lib/gitlab/ci/templates/Jobs/Build.gitlab-ci.yml
+  stage: build
+  script:
+    # https://github.com/internetarchive/nomad/blob/main/build.sh
+    - export NOMAD_VAR_BUILD_DEPLOY=""
+    - /build.sh
+  artifacts:
+    reports:
+      dotenv: gl-auto-build-variables.env
+  rules:
+    - if: '$BUILD_DISABLED'
+      when: never
+    - if: '$CI_COMMIT_TAG || $CI_COMMIT_BRANCH'
+
+build_deploy:
+  stage: build
+  script:
+    # https://github.com/internetarchive/nomad/blob/main/build.sh
+    - /build.sh
+  rules:
+    - if: '$BUILD_DISABLED'
+      when: never
+    - if: '$NOMAD_VAR_BUILD_DEPLOY && $CI_COMMIT_BRANCH'
+
+
+# a repo using NOMAD_SECRET_PROXYUP can have a test phase that does: `extends: .test-proxy-auth`
+# to run this to adjust the HTTPS_PROXY related vars for test jobs, if needed.
+.test-proxy-auth:
+  stage: test
+  before_script:
+    - |
+      # Setup authenticated proxy if credentials available
+      if [[ -n "$NOMAD_SECRET_PROXYUP" && -n "$HTTPS_PROXY" ]]; then
+        P1=$(echo "$HTTPS_PROXY" | cut -f1 -d/)
+        P2=$(echo "$HTTPS_PROXY" | cut -f3 -d/)
+        export HTTPS_PROXY="${P1}//${NOMAD_SECRET_PROXYUP}${P2}"
+        export HTTP_PROXY="${P1}//${NOMAD_SECRET_PROXYUP}${P2}"
+        echo "✓ Authenticated proxy configured"
+      fi
+  rules:
+    - if: "$TEST_DISABLED"
+      when: never
+    - if: "$CI_COMMIT_BRANCH"
+
+
+deploy:
+  stage: deploy
+  script:
+    # https://github.com/internetarchive/nomad/blob/main/deploy.sh
+    - /deploy.sh
+  environment:
+    name: $CI_COMMIT_REF_SLUG
+    url: https://$HOSTNAME
+    on_stop: stop_review
+  rules:
+    - if: '$NOMAD_VAR_NO_DEPLOY'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: never
+    - if: '$CI_COMMIT_TAG || $CI_COMMIT_BRANCH'
+
+deploy-serverless:
+  stage: deploy
+  script:
+    - |
+      if [[ -n "$CI_REGISTRY" && -n "$CI_REGISTRY_USER" ]]; then
+        echo "Logging in to GitLab Container Registry with CI credentials..."
+
+        # this filters stderr of `podman login`, w/o merging stdout & stderr together
+        set +x
+        { echo "$CI_REGISTRY_PASSWORD" | podman --remote login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY" 2>&1 1>&3 | ( grep -E -v "^WARNING! Your password will be stored unencrypted in |^Configure a credential helper to remove this warning. See|^https://docs.docker.com/engine/reference/commandline/login/#credentials-store" || true ) 1>&2; } 3>&1
+      fi
+
+      set -x
+      image_tagged="$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA"
+      image_latest="$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:latest"
+      podman --remote tag  $image_tagged $image_latest
+      podman --remote push $image_latest
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH && $NOMAD_VAR_SERVERLESS'
+
+
+stop_review:
+  # See:
+  # https://gitlab.com/gitlab-org/gitlab-foss/blob/master/lib/gitlab/ci/templates/Jobs/Deploy.gitlab-ci.yml
+  stage: cleanup
+  variables:
+    GIT_STRATEGY: none
+  script:
+    # https://github.com/internetarchive/nomad/blob/main/deploy.sh
+    - /deploy.sh stop
+  environment:
+    name: $CI_COMMIT_REF_SLUG
+    action: stop
+  dependencies: []
+  allow_failure: true
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      when: never
+    - if: '$NOMAD_VAR_NO_DEPLOY'
+      when: never
+    - if: '$CI_COMMIT_TAG || $CI_COMMIT_BRANCH'
+      when: manual
